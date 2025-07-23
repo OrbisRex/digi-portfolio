@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section id="top" class="main">
+    <h1>Good Bye</h1>
+    <p>Logged out!</p>
+    <a href="{% url 'login'%}">Click to login again.</a>
+  </section>
+
+  <section id="navigation">
+    <span class="button"><a href="{%  url 'core:index' %}" title="Home">&lt;</a></span>
+  </section>
+{% endblock %}

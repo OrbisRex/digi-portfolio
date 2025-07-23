@@ -1,0 +1,40 @@
+{# Settings - Subjuect template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Settings - Subject{% endblock %}
+
+{% block content %}
+    <section id="top" class="main">
+        <div class="wide-envelop">
+        {%if subject %}
+            <h1>{{ subject.name }}</h1>
+            <p>by {% for staff in subject.lead.all %} {{staff.user.username}} {% endfor %}</p>
+
+            <form action="{% url 'settings:subject' subject.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">    
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        {% else %}
+            <h1>New subject</h1>
+            <p class='info'>No subject found. Add some!</p>
+
+            <form action="{% url 'settings:new_subject' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">    
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        {% endif %}
+
+        </div>
+    </section>
+
+    <section id="navigation">
+        <span class="button"><a href="{% url 'settings:index' %}#subject" title="Settings">&lt;</a></span>
+        {# <span class="button warning"><a href="{{ path('app_logout')}}">Log Out</a></span> #}
+    </section>
+{% endblock %}

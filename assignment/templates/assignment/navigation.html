@@ -1,0 +1,11 @@
+<section id="navigation">
+    {# <span class="button"><a href="{% url 'core' %}" title="core">&lt;</a></span> #}
+    <span class="button"><a href="{% url 'assignment:new' %}" title="New Assignment">+</a></span>
+    <span class="button"><a href="#top">Last</a></span>
+    <span class="button"><a href="#subject">Subject</a></span>
+    <span class="button"><a href="#topic">Topic</a></span>
+    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="button-logout">Log Out</button>
+    </form>    
+</section>

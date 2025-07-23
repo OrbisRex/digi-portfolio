@@ -1,0 +1,38 @@
+{# New Assignment template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | New Assignment{% endblock %}
+
+{% block content %}
+    <section id="top" class="form">
+        <div class="wide-envelop">
+        {% if assignment %}
+            <h1>{{ assignment.name }}</h1>
+            <p>by {{assignment.teacher.user.username}}</p>
+
+            <form action="{% url 'assignment:edit' assignment.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">    
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        {% else %}
+            <h1>New Assignment</h1>
+            <p class='info'>Add new assignment. Awesome!</p>
+            <form action="{% url 'assignment:new' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">    
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        {% endif %}
+        </div>
+    </section>
+
+    <section id="navigation">
+        <span class="button"><a href="{% url 'assignment:index' %}" title="Assignments">&lt;</a></span>
+        {# <span class="button warning"><a href="{{ path('app_logout')}}">Log Out</a></span> #}
+    </section>
+{% endblock %}

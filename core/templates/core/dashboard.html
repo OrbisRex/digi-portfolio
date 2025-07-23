@@ -1,0 +1,20 @@
+{# Dashboard template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Dashboard{% endblock %}
+
+{% block content %}
+    <section id="top" class="main">
+        <h1>Dashboard</h1>
+        <p>Welcome back {{user.username}}!</p>
+    </section>
+    <section class="peopleIn">
+        <h2>Who is in?</h2>
+        {#<span class="button"><a href="{{ path('assignment')}}">Assignments</a></span>#}
+    </section> 
+    <section class="workload">
+        <h2>Workload</h2>
+    </section>
+    
+    {% include "core/navigation.html" %}
+{% endblock %}

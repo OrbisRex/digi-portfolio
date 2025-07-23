@@ -1,0 +1,42 @@
+{# Settings template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Settings{% endblock %}
+
+{% block content %}
+    <section id="top" class="main">
+        <h1>Settings</h1>
+        <div class="button-list">
+        </div>
+    </section>
+
+    <section id="subject" class="darkblue">
+        <h2>Subject Management</h2>
+        {%if subjects %}
+            <div class="button-list">
+            <span class="button"><a href="{% url 'settings:new_subject' %}" title="Add your new subject.">+</a></span>
+            {% for subject in subjects %}
+                <span class="button"><a href="{% url 'settings:subject' subject.id %}">{{ subject.name }}</a></span>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p class='info'>No subjects found. Add some!</p>
+        {% endif %}
+    </section>
+
+    <section id="topic" class="lightgray">
+        <h2>Topic Management</h2>
+        {%if topics %}
+            <div class="button-list">
+            <span class="button"><a href="{% url 'settings:new_topic' %}" title="Add your new topic.">+</a></span>
+            {% for topic in topics %}
+                <span class="button"><a href="{% url 'settings:topic' topic.id %}">{{ topic.heading }}</a></span>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p class='info'>No topics found. Add some!</p>
+        {% endif %}
+    </section>
+
+    {% include "settings/navigation.html" %}
+{% endblock %}

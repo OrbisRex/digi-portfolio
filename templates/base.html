@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}DiGi Portfolio{% endblock %}</title>
+        {% load static %}
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/screen.css' %}">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+    </head>
+
+    <body>
+        {% block content %}{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="{% static 'js/main.js' %}"></script>        
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,80 @@
+{# Assignment template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Assignment{% endblock %}
+
+{% block content %}
+    <section id="top" class="main">
+        <h1>Assignments</h1>
+        <div class="wide-white-block">
+        {%if assignments %}
+            {% for assignment in assignments %}
+                <span class="block-envelop">
+                    {% if assignment.subject %} 
+                        <span class="group">
+                            {{ assignment.subject.name }}
+                        </span>
+                        <span class="data">
+                            <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                        </span>
+                    {% else %}
+                        No Subject
+                    {% endif %}
+                </span>
+            {% endfor %}    
+        {% else %}    
+            <p class='info'>No assignment found.</p>
+        {% endif %}    
+        </div>    
+    </section>
+
+    <section id="subject" class="darkblue">
+        <h2>Assignments {% if selected_subject %} for {{ selected_subject.name }} {% else %} by subject {% endif %}</h2>
+        <div class="button-list">
+        <span class="button"><a href="{% url 'assignment:index' %}#subject">All</a></span>
+        {% for subject in subjects %}
+            <span class="button"><a href="{% url 'assignment:index' subject.id %}#subject">{{ subject.name }}</a></span>
+        {% endfor %}
+        </div>
+        
+        <div class="wide-envelop">
+            <div class="wide-darkblue-block">
+            {%if assignments_by_subject and selected_subject %}
+                {% for assignment in assignments_by_subject %}
+                    <span class="block-envelop">
+                        {% if assignment.subject %} 
+                            <span class="group">
+                                {{ assignment.subject.name }}
+                            </span>
+                            <span class="data">
+                                <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                            </span>
+                        {% else %}
+                            No Subject
+                        {% endif %}
+                    </span>
+                {% endfor %}    
+            {%elif assignments_by_subject and not selected_subject %}
+                {% for assignment in assignments_by_subject %}
+                    <span class="block-envelop">
+                        {% if assignment.subject %} 
+                            <span class="group">
+                                {{ assignment.subject.name }}
+                            </span>
+                            <span class="data">
+                                <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                            </span>
+                        {% else %}
+                            No Subject
+                        {% endif %}
+                    </span>
+                {% endfor %}    
+            {% else %}
+                <p class='info'>No assignment found for the selected subject.</p>
+            {% endif %}
+            </div>    
+        </div>
+    </section>
+
+    {% include "assignment/navigation.html" %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{# Homepage template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Home{% endblock %}
+
+{% block content %}
+    <section id="top" class="main">
+        <h1>DiGi Portfolio</h1>
+        <p>!</p>
+    </section>
+    
+    <section id="navigation">
+        {% if user.is_authenticated %}
+            <span class="note" title="It is you.">Logged in as {{ user.username }}.</span>
+            <span class="button"><a href="{%  url 'core:dashboard' %}" title="Back to work.">&gt;</a></span>
+            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="button-logout">Log Out</button>
+            </form>    
+        {% else %}
+           <span class="button"><a href="{% url 'login' %}">Log In</a></span>
+           {# <span class="button"><a href="{{ path('security_up') }}">Register</a></span> #}
+        {% endif %} 
+    </section>
+{% endblock %}
