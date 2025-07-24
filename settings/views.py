@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.conf import settings
 
-from .models import Staff
+from .models import Member
 from .models import Subject
 from .models import Topic
 from .forms import SubjectForm
@@ -103,7 +103,7 @@ class TopicView(PermissionRequiredMixin, UpdateView):
             
             if form.is_valid():
                 topic.heading = form.cleaned_data['heading']
-                topic.author = Staff.objects.get(pk=request.user.id) # Select box or automatic?? Use rather settings.AUTH_USER_MODEL??
+                topic.author = Member.objects.get(pk=request.user.id) # Select box or automatic?? Use rather settings.AUTH_USER_MODEL??
                 topic.save()
         except self.model.DoesNotExist:
             # New Topic form

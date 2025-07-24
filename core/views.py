@@ -9,7 +9,7 @@ from django.template import loader
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from settings.models import Staff
+from settings.models import Member
 
 
 class IndexView(TemplateView):
@@ -28,13 +28,13 @@ class DashboardView(TemplateView):
     template_name = "index.html"
 
     def get_current_user(self):
-        return Staff.objects.get(pk=self.request.user.id)
+        return Member.objects.get(user_id=self.request.user.id)
 
     def get(self, request):
         
         try:
             loged_as = self.get_current_user()
-        except Staff.DoesNotExist:
+        except Member.DoesNotExist:
             loged_as = None
             #error_msg = "You are not authorised to operate the system. Contact the administrator to grant you access."
 

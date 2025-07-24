@@ -1,10 +1,10 @@
 <section id="navigation">
-    {% if loged_as.user.staff.type == 'ROLE_TEACHER' %}
+    {% if loged_as.user.member.role == 'ROLE_TEACHER' or loged_as.user.member.role == 'ROLE_ADMIN' %}
         <span class="button"><a href="{% url 'assignment:index' %}">Assignments</a></span>
         {# <span class="button"><a href="{% url 'submission:index' %}">Submissions</a></span> #}
         {# <span class="button"><a href="{% url 'person:index' %}">People</a></span> #}
         <span class="button"><a href="{% url 'settings:index' %}">Settings</a></span>
-    {% elif loged_as.user.staff.type == 'ROLE_STUDENT' %}
+    {% elif loged_as.user.member.role == 'ROLE_STUDENT' %}
         <span class="button"><a href="{% url 'assignment:index' %}">Assignments</a></span>
         {# <span class="button"><a href="{% url 'submission:index' %}">Submissions</a></span> #}
         {# <span class="button"><a href="{% url 'person:profile' current.user.id %}">Profile</a></span> #}

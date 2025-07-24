@@ -8,7 +8,7 @@ from django.template import loader
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 
-from .models import Staff
+from .models import Member
 from .models import Assignment
 from .models import Subject
 
@@ -18,11 +18,11 @@ from .forms import AssignmentForm
 class IndexView(PermissionRequiredMixin, TemplateView):
     """Conbined view of all assignments."""
 
-    permission_required = ('assignment.view_assignment', 'settings.view_staff', 'settings.view_subject')
+    permission_required = ('assignment.view_assignment', 'settings.view_member', 'settings.view_subject')
     template_name = "index.html"
     
     def get_current_user(self):
-        return Staff.objects.get(pk=self.request.user.id)
+        return Member.objects.get(pk=self.request.user.id)
         
     def get_queryset(self):
         return Assignment.objects.filter(teacher__id=self.request.user.id).order_by('-update_time')[:8]
@@ -59,11 +59,11 @@ class NewEditView(PermissionRequiredMixin, UpdateView):
 
     model = Assignment
     form_class = AssignmentForm
-    permission_required = ('assignment.add_assignment', 'assignment.change_assignment', 'settings.view_staff')
+    permission_required = ('assignment.add_assignment', 'assignment.change_assignment', 'settings.view_member')
     template_name = "assignment/new-edit.html"
 
     def get_current_user(self):
-        return Staff.objects.get(pk=self.request.user.id)
+        return Member.objects.get(pk=self.request.user.id)
     
     def get(self, request, assignment_id=None):
         # Test GET parameters to edit or inser data

@@ -1,18 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
-class Staff(models.Model):
-    TEACHER = 'ROLE_TEACHER'
-    
-    ACCOUNT_TYPE = {
-        TEACHER: 'Teacher',
-    }
+class Member(models.Model):
+
+    class Roles(models.TextChoices):
+        STUDENT = 'ROLE_STUDENT', _('Student')
+        INSTRUCTOR = 'ROLE_INSTRUCTOR', _('Instructor')
+        TEACHER = 'ROLE_TEACHER', _('Teacher')
+        ADMIN = 'ROLE_ADMIN', _('Admin')
     
     ##Fileds
-    # NOTE: Replace by Groups - Privilage? 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    type = models.CharField(choices=ACCOUNT_TYPE, default=TEACHER, help_text='Select an appropriate account type.')
+    role = models.JSONField(choices=Roles.choices, help_text='Select an appropriate role.')
     
     ##Metadata
     
@@ -24,8 +25,8 @@ class Staff(models.Model):
 class Subject(models.Model):
     ##Fileds
     name = models.CharField(max_length=100)
-    # lead = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    lead = models.ManyToManyField(Staff)
+    # lead = models.ForeignKey(Member, on_delete=models.CASCADE)
+    lead = models.ManyToManyField(Member)
     #pub_date = models.DateTimeField("date published")
 
     ##Metadata    
@@ -39,7 +40,7 @@ class Topic(models.Model):
     heading = models.CharField(max_length=200)
     text = models.CharField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    author = models.ForeignKey(Member, on_delete=models.CASCADE)
 
     ##Metadata
     

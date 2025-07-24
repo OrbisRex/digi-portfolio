@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Staff
+from .models import Member
 from .models import Subject
 from .models import Topic
 

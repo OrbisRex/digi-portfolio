@@ -8,7 +8,7 @@
         <div class="wide-envelop">
         {%if subject %}
             <h1>{{ subject.name }}</h1>
-            <p>by {% for staff in subject.lead.all %} {{staff.user.username}} {% endfor %}</p>
+            <p>by {% for member in subject.lead.all %} {{member.user.username}} {% endfor %}</p>
 
             <form action="{% url 'settings:subject' subject.id %}" method="post">
                 {% csrf_token %}

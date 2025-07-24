@@ -1,10 +1,13 @@
 <section id="navigation">
-    {# <span class="button"><a href="{% url 'core' %}" title="core">&lt;</a></span> #}
-    <span class="button"><a href="{% url 'assignment:new' %}" title="New Assignment">+</a></span>
+    <span class="button"><a href="{%  url 'core:dashboard' %}" title="Back to Dashboard.">&lt;</a></span>
+    {% if loged_as.user.member.role == 'ROLE_INSTRUCTOR' or loged_as.user.member.role == 'ROLE_TEACHER' or loged_as.user.member.role == 'ROLE_ADMIN' %}
+        <span class="button"><a href="{% url 'assignment:new' %}" title="New Assignment">+</a></span> 
+    {% endif %}
+
     <span class="button"><a href="#top">Last</a></span>
     <span class="button"><a href="#subject">Subject</a></span>
     <span class="button"><a href="#topic">Topic</a></span>
-    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+    <form id="logout-form" method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="button-logout">Log Out</button>
     </form>    

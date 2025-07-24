@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from settings.models import Subject
 from settings.models import Topic
-from settings.models import Staff
+from settings.models import Member
 
 
 class Assignment(models.Model):
@@ -19,7 +19,7 @@ class Assignment(models.Model):
     state = models.CharField(choices=STATE_TYPE, default=PUBLIC)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Member, on_delete=models.CASCADE)
     note = models.CharField(max_length=255, null=True)
     update_time = models.DateTimeField(auto_now=True)
     
