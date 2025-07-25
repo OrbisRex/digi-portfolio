@@ -1,7 +1,7 @@
 <section id="navigation">
     <span class="button"><a href="{%  url 'core:dashboard' %}" title="Back to Dashboard.">&lt;</a></span>
-    {% if loged_as.user.member.role == 'ROLE_INSTRUCTOR' or loged_as.user.member.role == 'ROLE_TEACHER' or loged_as.user.member.role == 'ROLE_ADMIN' %}
-        <span class="button"><a href="{% url 'assignment:new' %}" title="New Assignment">+</a></span> 
+    {% if perms.projects.add_assignment %}
+        <span class="button"><a href="{% url 'projects:assignment-new' %}" title="New Assignment">+</a></span> 
     {% endif %}
 
     <span class="button"><a href="#top">Last</a></span>

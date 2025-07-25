@@ -4,11 +4,11 @@
 {% block title %}DiGi Portfolio | Settings - Subject{% endblock %}
 
 {% block content %}
-    <section id="top" class="main">
+    <section id="top" class="form">
         <div class="wide-envelop">
         {%if subject %}
             <h1>{{ subject.name }}</h1>
-            <p>by {% for member in subject.lead.all %} {{member.user.username}} {% endfor %}</p>
+            <p>by {% for lead in subject.lead.all %} {{lead.username}}{%if not forloop.last%},{%endif%} {% endfor %}</p>
 
             <form action="{% url 'settings:subject' subject.id %}" method="post">
                 {% csrf_token %}
@@ -19,9 +19,7 @@
             </form>
         {% else %}
             <h1>New subject</h1>
-            <p class='info'>No subject found. Add some!</p>
-
-            <form action="{% url 'settings:new_subject' %}" method="post">
+            <form action="{% url 'settings:new-subject' %}" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
@@ -29,12 +27,14 @@
                 </div>
             </form>
         {% endif %}
-
         </div>
     </section>
 
     <section id="navigation">
         <span class="button"><a href="{% url 'settings:index' %}#subject" title="Settings">&lt;</a></span>
-        {# <span class="button warning"><a href="{{ path('app_logout')}}">Log Out</a></span> #}
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button-logout">Log Out</button>
+        </form>    
     </section>
 {% endblock %}

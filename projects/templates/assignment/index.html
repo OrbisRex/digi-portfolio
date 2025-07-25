@@ -1,7 +1,7 @@
 {# Assignment template #}
 {% extends 'base.html' %}
 
-{% block title %}DiGi Portfolio | Assignment{% endblock %}
+{% block title %}DiGi Portfolio | Assignments{% endblock %}
 
 {% block content %}
     <section id="top" class="main">
@@ -15,7 +15,7 @@
                             {{ assignment.subject.name }}
                         </span>
                         <span class="data">
-                            <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                            <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
                         </span>
                     {% else %}
                         No Subject
@@ -31,9 +31,9 @@
     <section id="subject" class="darkblue">
         <h2>Assignments {% if selected_subject %} for {{ selected_subject.name }} {% else %} by subject {% endif %}</h2>
         <div class="button-list">
-        <span class="button"><a href="{% url 'assignment:index' %}#subject">All</a></span>
+        <span class="button"><a href="{% url 'projects:assignment-index' %}#subject">All</a></span>
         {% for subject in subjects %}
-            <span class="button"><a href="{% url 'assignment:index' subject.id %}#subject">{{ subject.name }}</a></span>
+            <span class="button"><a href="{% url 'projects:assignment-index' subject.id %}#subject">{{ subject.name }}</a></span>
         {% endfor %}
         </div>
         
@@ -47,7 +47,7 @@
                                 {{ assignment.subject.name }}
                             </span>
                             <span class="data">
-                                <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                                <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
                             </span>
                         {% else %}
                             No Subject
@@ -62,7 +62,7 @@
                                 {{ assignment.subject.name }}
                             </span>
                             <span class="data">
-                                <a href="{% url 'assignment:detail' assignment.id %}">{{ assignment.name }}</a>
+                                <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
                             </span>
                         {% else %}
                             No Subject

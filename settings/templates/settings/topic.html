@@ -4,11 +4,11 @@
 {% block title %}DiGi Portfolio | Settings - Topic{% endblock %}
 
 {% block content %}
-    <section id="top" class="main">
+    <section id="top" class="form">
         <div class="wide-envelop">
         {%if topic %}
             <h1>{{ topic.heading }}</h1>
-            <p>by {{ topic.author.user.username }}</p>
+            <p>by {{ topic.author }}</p>
 
             <form action="{% url 'settings:topic' topic.id %}" method="post">
                 {% csrf_token %}
@@ -19,9 +19,7 @@
             </form>
         {% else %}
             <h1>New topic</h1>
-            <p class='info'>No topic found. Add some!</p>
-
-            <form action="{% url 'settings:new_topic' %}" method="post">
+            <form action="{% url 'settings:new-topic' %}" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
@@ -29,12 +27,14 @@
                 </div>
             </form>
         {% endif %}
-
         </div>
     </section>
 
     <section id="navigation">
         <span class="button"><a href="{% url 'settings:index' %}#topic" title="Settings">&lt;</a></span>
-        {# <span class="button warning"><a href="{{ path('app_logout')}}">Log Out</a></span> #}
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button-logout">Log Out</button>
+        </form>    
     </section>
 {% endblock %}

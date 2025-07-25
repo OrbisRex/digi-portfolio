@@ -25,8 +25,7 @@ class Member(models.Model):
 class Subject(models.Model):
     ##Fileds
     name = models.CharField(max_length=100)
-    # lead = models.ForeignKey(Member, on_delete=models.CASCADE)
-    lead = models.ManyToManyField(Member)
+    lead = models.ManyToManyField(User)
     #pub_date = models.DateTimeField("date published")
 
     ##Metadata    
@@ -40,7 +39,7 @@ class Topic(models.Model):
     heading = models.CharField(max_length=200)
     text = models.CharField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(Member, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     ##Metadata
     

@@ -207,17 +207,30 @@ section.darkblue a:hover {
     text-decoration: none;
 }
 
+section.darkblue span.button-notactive {
+    display: inline-block;
+    text-align: center;
+    color: rgb(180, 180, 180);
+    background-color: rgb(0, 40, 140);
+    padding: 1%;
+    margin: 0.5%;
+}
+
 section.darkblue span.button a {
     display: inline-block;
     text-decoration: none;
+    color: rgb(255, 255, 255);
     background-color: rgb(0, 40, 140);
     padding: 1%;
     margin: 0.5%;
 }
 
 section.darkblue span.button a:hover {
+    display: inline-block;
+    text-decoration: none;
     background: rgb(0, 100, 200);
     padding: 1%;
+    margin: 0.5%;
 }
 
 section.darkblue form {
@@ -257,6 +270,7 @@ section.darkblue span.data {
     margin: 0 5%;
     padding: 0;
 }
+
 
 /*Light Gray Section*/
 section.lightgray {
@@ -315,21 +329,37 @@ section.lightgray a:hover {
     padding: 1%;
 }
 
+section.lightgray span.button-notactive {
+    display: inline-block;
+    text-align: center;
+    color: rgb(150, 150, 150);
+    background-color: rgb(220, 220, 220);
+    padding: 1%;
+    margin: 0.5%;
+}
+
 section.lightgray span.button a {
     display: inline-block;
     text-decoration: none;
+    color: rgb(0, 50, 150);
     background-color: rgb(200, 200, 200);
     padding: 1%;
     margin: 0.5%;
 }
 
 section.lightgray span.button a:hover {
+    display: inline-block;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
     background: rgb(100, 100, 100);
+    padding: 1%;
+    margin: 0.5%;
 }
 
 section.lightgray form {
     margin: 0;
 }
+
 
 /*Additions to sections*/
 div.body-envelop section:last-child {

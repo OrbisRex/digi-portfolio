@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
+from django.contrib.auth.models import User
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
@@ -18,33 +19,39 @@ from .forms import AssignmentForm
 class IndexView(PermissionRequiredMixin, TemplateView):
     """Conbined view of all assignments."""
 
-    permission_required = ('assignment.view_assignment', 'settings.view_member', 'settings.view_subject')
+    permission_required = ('projects.view_assignment', 'settings.view_member', 'settings.view_subject')
     template_name = "index.html"
     
     def get_current_user(self):
-        return Member.objects.get(pk=self.request.user.id)
+        try:
+           return User.objects.get(pk=self.request.user.id)
+        except:
+            return None
         
     def get_queryset(self):
         return Assignment.objects.filter(teacher__id=self.request.user.id).order_by('-update_time')[:8]
     
+    def get_assignments_by_subject(self, subject_id):
+        try:
+            return Assignment.objects.filter(subject=subject_id, teacher=self.get_current_user()).order_by('-update_time')
+        except:
+            return None
+    
     def get(self, request, subject_id=None):
-        print(self.get_permission_required())   
-        print(request.user.has_perm('assignment.edit_assignment'))   
-
         ## Top section
         try:
             assignments = self.get_queryset()
         except Assignment.DoesNotExist:
             assignments = None
         
-        ## Assignments by subject section
+        ## Projectss by subject section
         # List of subjects for buttons
         subjects = Subject.objects.all().order_by('name')
         
         # Select assignments
         try:
             selected_subject = Subject.objects.get(pk = subject_id)
-            assignments_by_subject = Assignment.objects.filter(subject=subject_id, teacher=self.get_current_user()).order_by('-update_time')
+            assignments_by_subject = self.get_assignments_by_subject(subject_id)
         except Subject.DoesNotExist:
             selected_subject = None
             assignments_by_subject = self.get_queryset()
@@ -59,11 +66,11 @@ class NewEditView(PermissionRequiredMixin, UpdateView):
 
     model = Assignment
     form_class = AssignmentForm
-    permission_required = ('assignment.add_assignment', 'assignment.change_assignment', 'settings.view_member')
+    permission_required = ('projects.add_assignment', 'projects.change_assignment', 'settings.view_member')
     template_name = "assignment/new-edit.html"
 
     def get_current_user(self):
-        return Member.objects.get(pk=self.request.user.id)
+        return User.objects.get(pk=self.request.user.id)
     
     def get(self, request, assignment_id=None):
         # Test GET parameters to edit or inser data
@@ -102,7 +109,7 @@ class NewEditView(PermissionRequiredMixin, UpdateView):
                 assignment.author = self.get_current_user() # Select box or automatic??
                 assignment.note = form.cleaned_data['note']
                 assignment.save()
-            return HttpResponseRedirect(reverse("assignment:detail", kwargs={'assignment_id':assignment_id}))
+            return HttpResponseRedirect(reverse("projects:assignment-detail", kwargs={'assignment_id':assignment_id}))
         except self.model.DoesNotExist:
             # New data to save
             if form.is_valid():
@@ -110,14 +117,14 @@ class NewEditView(PermissionRequiredMixin, UpdateView):
                 assignment.teacher = self.get_current_user()
                 assignment.save()
                 form.save_m2m()            
-            return HttpResponseRedirect('{}#top'.format(reverse("assignment:index")))
+            return HttpResponseRedirect('{}#top'.format(reverse("projects:assignment-index")))
     
     
 class DetailView(PermissionRequiredMixin, TemplateView):
     """Show details of selected assignemnt with a link to edit."""
     
     model = Assignment
-    permission_required = ('assignment.view_assignment')
+    permission_required = ('projects.view_assignment')
     template_name = "detail.html"
 
     def get(self, request, assignment_id):

@@ -7,26 +7,30 @@
     <div class="body-envelop">
     <section id="top" class="main">
         <h1>{{ assignment.name }}</h1>
-        <div class="button-list">
-            <span class="button"><a href="{% url 'assignment:edit' assignment.id %}">Edit</a></span>
-        </div>
         <p>
            {% if assignment.subject %} {{ assignment.subject.name }} {% else %} No Subject {% endif %} 
             | 
            {% if assignment.topic %} {{ assignment.topic.heading }} {% else %} No Topic {% endif %}
+            | 
+           {{ assignment.state }}
         </p>
         <p>{{ assignment.note }}</p>
-        {% comment %}
-        {% if is_granted('ROLE_TEACHER') %}
-            <span class="button"><a href="{% 'assignment:edit' assignment.id %}" title="Edit Assignment.">Edit</a></span>
-        {% else %}
-            {#<span class="button"><a href="{% 'submission:new' %}" title="Add Submission.">Add Submission</a></span>
+
+        {% if perms.assignment.change_assignment %}
+            <div class="button-list">
+                <span class="button"><a href="{% url 'projects:assignment-edit' assignment.id %}">Edit</a></span>
+            </div>
         {% endif %}
+        {% comment %}
+            {#<span class="button"><a href="{% 'submission:new' %}" title="Add Submission.">Add Submission</a></span>
         {% endcomment %}
     </section>
 
     <section id="navigation">
-        <span class="button"><a href="{% url 'assignment:index' %}" title="Assignments">&lt;</a></span>
-        {# <span class="button warning"><a href="{{ path('app_logout')}}">Log Out</a></span> #}
+        <span class="button"><a href="{% url 'projects:assignment-index' %}" title="Back to Projects">&lt;</a></span>
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button-logout">Log Out</button>
+        </form>    
     </section>
     {% endblock %}

@@ -1,0 +1,30 @@
+from django.forms import ModelForm
+
+from settings.models import Subject
+from settings.models import Topic
+from settings.models import Member
+from .models import Assignment
+
+
+class AssignmentForm(ModelForm):
+    
+    # Get request from the view and select only topics belonging to current user.
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+        # Filter lead or author by member roles
+        # ROLE_ADMIN: see all teachers and instructors
+        member = Member.objects.get(user_id=self.request.user.id)
+        if member.Roles.ADMIN in member.role:
+            self.fields['subject'].queryset = Subject.objects.all()
+            self.fields['topic'].queryset = Topic.objects.all()
+        else:    
+            self.fields['subject'].queryset = Subject.objects.filter(
+                lead=self.request.user.id)
+            self.fields['topic'].queryset = Topic.objects.filter(
+                author=self.request.user.id)
+
+    class Meta:
+        model = Assignment
+        fields = ['subject', 'topic', 'name', 'state', 'note']
