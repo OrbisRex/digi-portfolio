@@ -3,7 +3,7 @@ from django.urls import path
 from .views import IndexView
 from .views import SubjectView
 from .views import TopicView
-from .views import GroupView
+from .views import SetView
 
 app_name = 'settings'
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path("subject/<int:subject_id>", SubjectView.as_view(), name="subject"),
     path("topic/new", TopicView.as_view(), name="new-topic"),
     path("topic/<int:topic_id>", TopicView.as_view(), name="topic"),
-    path("group/<int:group_id>", GroupView.as_view(), name="group"),
+    path("set/new", SetView.as_view(), name="new-set"),
+    path("set/<int:set_id>", SetView.as_view(), name="set"),
 ]

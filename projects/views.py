@@ -12,6 +12,7 @@ from django.views.generic.edit import UpdateView
 from .models import Member
 from .models import Assignment
 from .models import Subject
+from .models import Topic
 
 from .forms import AssignmentForm
 
@@ -27,37 +28,69 @@ class IndexView(PermissionRequiredMixin, TemplateView):
            return User.objects.get(pk=self.request.user.id)
         except:
             return None
-        
-    def get_queryset(self):
-        return Assignment.objects.filter(teacher__id=self.request.user.id).order_by('-update_time')[:8]
-    
-    def get_assignments_by_subject(self, subject_id):
+
+    def get(self, request, subject_id=None, topic_id=None):
+        ## Top section #####
         try:
-            return Assignment.objects.filter(subject=subject_id, teacher=self.get_current_user()).order_by('-update_time')
-        except:
-            return None
-    
-    def get(self, request, subject_id=None):
-        ## Top section
-        try:
-            assignments = self.get_queryset()
+            if self.get_current_user().member.role == Member.Roles.ADMIN:
+                assignments = Assignment.objects.all()[:8]
+            else:
+                assignments = Assignment.get_assignments_by_teacher(user=self.request.user, limit=8)
+                
         except Assignment.DoesNotExist:
             assignments = None
         
-        ## Projectss by subject section
+        ## Assignments by subject section #####
         # List of subjects for buttons
-        subjects = Subject.objects.all().order_by('name')
+        if self.get_current_user().member.role == Member.Roles.ADMIN:
+            subjects = Subject.objects.all()
+        else:
+            subjects = Subject.get_subjects_by_owner(self.get_current_user())
         
         # Select assignments
         try:
             selected_subject = Subject.objects.get(pk = subject_id)
-            assignments_by_subject = self.get_assignments_by_subject(subject_id)
+            if self.get_current_user().member.role == Member.Roles.ADMIN:
+                assignments_by_subject = Assignment.objects.filter(subject=subject_id)
+            else:
+                assignments_by_subject = Assignment.get_assignments_by_subject(user=self.request.user, id=subject_id)
         except Subject.DoesNotExist:
             selected_subject = None
-            assignments_by_subject = self.get_queryset()
+            if self.get_current_user().member.role == Member.Roles.ADMIN:
+                assignments_by_subject = Assignment.objects.all()[:8]
+            else:
+                assignments_by_subject = Assignment.get_assignments_by_teacher(self.get_current_user(), limit=8)
+                
+        ## Assignments by topic section #####
+        # List of topics for buttons
+        if self.get_current_user().member.role == Member.Roles.ADMIN:
+            topics = Topic.objects.all()
+        else:
+            topics = Topic.get_topics_by_owner(self.request.user)
+        
+        # Select assignments
+        try:
+            selected_topic = Topic.objects.get(pk = topic_id)
+            if self.get_current_user().member.role == Member.Roles.ADMIN:
+                assignments_by_topic = Assignment.objects.filter(topic=topic_id)
+            else:
+                assignments_by_topic = Assignment.get_assignments_by_topic(user=self.request.user, id=topic_id)
+        except Topic.DoesNotExist:
+            selected_topic = None
+            if self.get_current_user().member.role == Member.Roles.ADMIN:
+                assignments_by_topic = Assignment.objects.all()[:8]
+            else:
+                assignments_by_topic = Assignment.get_assignments_by_teacher(user=self.request.user, limit=8)
 
         # Render all data
-        context = {'assignments':assignments, 'subjects':subjects, 'selected_subject':selected_subject, 'assignments_by_subject':assignments_by_subject}
+        context = {'assignments':assignments, 
+                   'subjects':subjects, 
+                   'topics':topics, 
+                   'selected_subject':selected_subject, 
+                   'assignments_by_subject':assignments_by_subject, 
+                   'selected_topic':selected_topic, 
+                   'assignments_by_topic':assignments_by_topic
+                   }
         return render(request, 'assignment/index.html', context)
 
 
@@ -129,7 +162,8 @@ class DetailView(PermissionRequiredMixin, TemplateView):
 
     def get(self, request, assignment_id):
         assignment = self.model.objects.get(pk=assignment_id)
-
-        context = {'assignment':assignment}
+        assignment_states = Assignment.States.choices
+        
+        context = {'assignment':assignment, 'assignment_states': assignment_states}
         return render(request, 'assignment/detail.html', context)
     

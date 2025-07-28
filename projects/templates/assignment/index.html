@@ -31,9 +31,12 @@
     <section id="subject" class="darkblue">
         <h2>Assignments {% if selected_subject %} for {{ selected_subject.name }} {% else %} by subject {% endif %}</h2>
         <div class="button-list">
+        {% if perms.settings.add_subject %}
+            <span class="button"><a href="{% url 'settings:new-subject' %}" title="Add your new subject.">+</a></span>
+        {% endif %}
         <span class="button"><a href="{% url 'projects:assignment-index' %}#subject">All</a></span>
         {% for subject in subjects %}
-            <span class="button"><a href="{% url 'projects:assignment-index' subject.id %}#subject">{{ subject.name }}</a></span>
+            <span class="button"><a href="{% url 'projects:assignment-subject' subject.id %}#subject">{{ subject.name }}</a></span>
         {% endfor %}
         </div>
         
@@ -50,7 +53,7 @@
                                 <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
                             </span>
                         {% else %}
-                            No Subject
+                            No assignment
                         {% endif %}
                     </span>
                 {% endfor %}    
@@ -65,12 +68,63 @@
                                 <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
                             </span>
                         {% else %}
-                            No Subject
+                            No assignment
                         {% endif %}
                     </span>
                 {% endfor %}    
             {% else %}
                 <p class='info'>No assignment found for the selected subject.</p>
+            {% endif %}
+            </div>    
+        </div>
+    </section>
+
+    <section id="topic" class="lightgray">
+        <h2>Assignments {% if selected_topics %} for {{ selected_topic.name }} {% else %} by topic {% endif %}</h2>
+        <div class="button-list">
+        {% if perms.settings.add_topic %}
+            <span class="button"><a href="{% url 'settings:new-topic' %}" title="Add your new topic.">+</a></span>
+        {% endif %}
+        <span class="button"><a href="{% url 'projects:assignment-index' %}#topic">All</a></span>
+        {% for topic in topics %}
+            <span class="button"><a href="{% url 'projects:assignment-topic' topic.id %}#topic">{{ topic.heading }}</a></span>
+        {% endfor %}
+        </div>
+        
+        <div class="wide-envelop">
+            <div class="wide-lightgray-block">
+            {%if assignments_by_topic and selected_topic %}
+                {% for assignment in assignments_by_topic %}
+                    <span class="block-envelop">
+                        {% if assignment.topic %} 
+                            <span class="group">
+                                {{ assignment.topic.heading }}
+                            </span>
+                            <span class="data">
+                                <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
+                            </span>
+                        {% else %}
+                            No assignment
+                        {% endif %}
+                    </span>
+                {% endfor %}    
+            {%elif assignments_by_topic and not selected_topic %}
+                {% for assignment in assignments_by_topic %}
+                    <span class="block-envelop">
+                        {% if assignment.subject %} 
+                            <span class="group">
+                                {{ assignment.topic.heading }}
+                            </span>
+                            <span class="data">
+                                <a href="{% url 'projects:assignment-detail' assignment.id %}">{{ assignment.name }}</a>
+                            </span>
+                        {% else %}
+                            No assignment
+                        {% endif %}
+                    </span>
+                {% endfor %}    
+            {% else %}
+                <p class='info'>No assignment found for the selected topic.</p>
             {% endif %}
             </div>    
         </div>

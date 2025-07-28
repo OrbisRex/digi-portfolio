@@ -31,7 +31,7 @@
     </section>
 
     <section id="navigation">
-        <span class="button"><a href="{% url 'settings:index' %}#subject" title="Settings">&lt;</a></span>
+        <span class="button"><a href="{{ request.session.http_referer }}#subject" title="Settings">&lt;</a></span>
         <form id="logout-form" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="button-logout">Log Out</button>

@@ -319,6 +319,7 @@ section.lightgray h2 {
 
 section.lightgray a {
     color: rgb(0, 50, 150);
+    text-decoration: none;
     padding: 1%;
 }
 

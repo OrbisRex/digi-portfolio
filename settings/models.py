@@ -31,6 +31,9 @@ class Subject(models.Model):
     ##Metadata    
     
     ##Methods
+    def get_subjects_by_owner(user):
+        return Subject.objects.filter(lead=user.id).order_by('name')
+
     def __str__(self):
         return self.name
 
@@ -44,13 +47,23 @@ class Topic(models.Model):
     ##Metadata
     
     ##Methods
+    def get_topics_by_owner(user):
+        return Topic.objects.filter(author=user.id).order_by('heading')
+
     def __str__(self):
         return self.heading
 
 
-class Group(models.Model):
+class Set(models.Model):
+    class Types(models.TextChoices):
+        YEAR = 'TYPE_YEAR', _('Year Group')
+        TUTOR = 'TYPE_TUTOR', _('Tutor Group')
+        PERFORM = 'TYPE_PERFORM', _('Performance')
+        INTEREST = 'TYPE_INTEREST', _('Interest')
+
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
+    type = models.CharField(max_length=100, choices=Types)
+    lead = models.ManyToManyField(User)
     
     ##Metadata
 

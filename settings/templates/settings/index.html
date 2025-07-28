@@ -50,5 +50,25 @@
         </div>
     </section>
 
+    <section id="set" class="darkblue">
+        <h2>Set Management</h2>
+        <div class="button-list">
+        {% if perms.settings.add_set %}
+            <span class="button"><a href="{% url 'settings:new-set' %}" title="Add your new set.">+</a></span>
+        {% endif %}
+        {%if sets %}
+            {% for set in sets %}
+                {% if perms.settings.change_set %}
+                    <span class="button"><a href="{% url 'settings:set' set.id %}">{{ set.name }}</a></span>
+                {% else %}
+                    <span class="button-notactive">{{ set.name }}</span>
+                {% endif %}    
+            {% endfor %}
+        {% else %}
+            <p class='info'>No set found. Add some!</p>
+        {% endif %}
+        </div>
+    </section>
+
     {% include "settings/navigation.html" %}
 {% endblock %}

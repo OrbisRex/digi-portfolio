@@ -7,6 +7,7 @@ from django.http import Http404
 from .models import Member
 from .models import Subject
 from .models import Topic
+from .models import Set
 
 
 class SubjectForm(ModelForm):
@@ -39,10 +40,28 @@ class TopicForm(ModelForm):
         # ROLE_ADMIN: see all teachers and instructors
         member = Member.objects.get(user_id=self.request.user.id)
         if member.Roles.ADMIN in member.role or member.Roles.TEACHER in member.role:
-            self.fields['author'].queryset = Member.objects.filter(role__in=[Member.Roles.INSTRUCTOR, Member.Roles.TEACHER])
+            self.fields['author'].queryset = User.objects.filter(member__role__in=[Member.Roles.INSTRUCTOR, Member.Roles.TEACHER])
         else:
             self.fields['author'].queryset = User.objects.filter(pk=self.request.user.id)
 
     class Meta:
         model = Topic
         fields = ['heading', 'author', 'text']
+
+
+class SetForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+        # Filter lead by member roles
+        # ROLE_ADMIN: see all teachers and instructors
+        member = Member.objects.get(user_id=self.request.user.id)
+        if member.Roles.ADMIN in member.role:
+            self.fields['lead'].queryset = User.objects.filter(member__role__in=[Member.Roles.INSTRUCTOR, Member.Roles.TEACHER])
+        else:
+            self.fields['lead'].queryset = User.objects.filter(pk=self.request.user.id)
+        
+    class Meta:
+        model = Set
+        fields = ['type', 'name', 'lead']
