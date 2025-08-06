@@ -179,6 +179,18 @@ section.form h3 {
     margin: 0;
 }
 
+section.form span.button a {
+    display: inline-block;
+    text-decoration: none;
+    background-color: rgb(200, 200, 200);
+    padding: 1%;
+    margin: 0.5%;
+}
+
+section.form span.button a:hover {
+    background: rgb(100, 100, 100);
+}
+
 /*Dark Blue Section*/
 section.darkblue {
     height: 100vh;
@@ -348,7 +360,22 @@ section.lightgray span.button a {
     margin: 0.5%;
 }
 
-section.lightgray span.button a:hover {
+
+section.lightgray span.button-corner a {
+    position: relative;
+    top: -25px;
+    display: inline;
+    float: right;
+    text-decoration: none;
+    font-weight: normal;
+    color: rgb(0, 50, 150);
+    background-color: rgb(200, 200, 200);
+    padding: 1%;
+    margin: 0.5%;
+
+}
+
+section.lightgray span.button a:hover, section.lightgray span.button-corner a:hover {
     display: inline-block;
     text-decoration: none;
     color: rgb(255, 255, 255);
@@ -408,8 +435,8 @@ span.button {
 }
 
 /*Data blocks*/
-div.wide-white-block, div.wide-darkgary-block, div.wide-darkblue-block,
-div.white-block, div.darkgary-block, div.darkblue-block {
+div.wide-white-block, div.wide-darkgray-block, div.wide-darkblue-block,
+div.white-block, div.darkgray-block, div.darkblue-block {
     display: inline-block;
     width: 45%;
     height: auto;
@@ -431,12 +458,12 @@ div.wide-darkblue-block {
     color: rgb(255, 255, 255);
 }
 
-div.wide-white-block, div.wide-darkgary-block, div.wide-darkblue-block {
+div.wide-white-block, div.wide-darkgray-block, div.wide-darkblue-block {
     width: 90%;
 }
 
-div.wide-darkgary-block h3.title, div.wide-darkblue-block h3.title,
-div.darkgary-block h3.title, div.darkblue-block h3.title {
+div.wide-darkgray-block h3.title, div.wide-darkblue-block h3.title,
+div.darkgray-block h3.title, div.darkblue-block h3.title {
     color: rgb(255, 255, 255);
     padding: 2vh 0;
     margin: 0;
@@ -447,8 +474,12 @@ div.darkblue-block h3.title {
     background-color: rgb(0, 100, 200);
 }
 
-div.wide-darkgary-block p.text, div.wide-darkblue-block p.text,
-div.darkgary-block p.text, div.darkblue-block p.text {
+div.darkgray-block div.button {
+    display: inline-block;
+}
+
+div.wide-darkgray-block p.text, div.wide-darkblue-block p.text,
+div.darkgray-block p.text, div.darkblue-block p.text {
     text-align: left;
     padding: 1vh 1vw;
     margin: 0;
@@ -458,21 +489,21 @@ div.darkblue-block p.text {
     color: rgb(255, 255, 255);
 }
 
-div.wide-darkgary-block p.text a, div.wide-darkblue-block p.text a,
-div.darkgary-block p.text a, div.darkblue-block p.text a {
+div.wide-darkgray-block p.text a, div.wide-darkblue-block p.text a,
+div.darkgray-block p.text a, div.darkblue-block p.text a {
     color: rgb(255, 255, 255);
     text-decoration: none;
 }
 
-.wide-darkgary-block p.text a:hover, .wide-darkblue-block p.text a:hover,
-.darkgary-block p.text a:hover, .darkblue-block p.text a:hover {
+.wide-darkgray-block p.text a:hover, .wide-darkblue-block p.text a:hover,
+.darkgray-block p.text a:hover, .darkblue-block p.text a:hover {
     color: rgb(200, 200, 200);
     text-decoration: underline;
     background-color: inherit;
 }
 
-.wide-darkgary-block p.tools, .wide-darkblue-block p.tools,
-.darkgary-block p.tools, .darkblue-block p.tools {
+.wide-darkgray-block p.tools, .wide-darkblue-block p.tools,
+.darkgray-block p.tools, .darkblue-block p.tools {
     font-size: 0.8em;
     text-align: right;
     color: rgb(100, 100, 100);
@@ -488,7 +519,7 @@ div.wide-darkblue-block label, div.darkblue-block label {
     color: rgb(255, 255, 255);
 }
 
-.wide-white-block span.block-envelop, .wide-darkgary-block span.block-envelop, .wide-darkblue-block span.block-envelop {
+.wide-white-block span.block-envelop, .wide-darkgray-block span.block-envelop, .wide-darkblue-block span.block-envelop {
     display: inline-block;
     min-width: 15vw;
     width: auto;
@@ -499,7 +530,7 @@ div.wide-darkblue-block label, div.darkblue-block label {
     border: none;
 }
 
-.wide-white-block span.group, .wide-darkgary-block span.group, .wide-darkblue-block span.group {
+.wide-white-block span.group, .wide-darkgray-block span.group, .wide-darkblue-block span.group {
     display: inline-block;
     width: 30%;
     height: auto;
@@ -511,7 +542,7 @@ div.wide-darkblue-block label, div.darkblue-block label {
     border-right: 2px solid rgb(100, 100, 100);
 }
 
-.wide-white-block span.data, .wide-darkgary-block span.data, .wide-darkblue-block span.data {
+.wide-white-block span.data, .wide-darkgray-block span.data, .wide-darkblue-block span.data {
     display: inline-block;
     width: 45%;
     height: auto;
@@ -525,11 +556,11 @@ div.wide-darkblue-block label, div.darkblue-block label {
     border-right: 2px solid rgb(0, 100, 200);
 }
 
-.wide-white-block a, .wide-darkgary-block span a, .wide-darkblue-block span a {
+.wide-white-block a, .wide-darkgray-block span a, .wide-darkblue-block span a {
     text-decoration: none;
 }
 
-.wide-white-block span.button a, .wide-darkgary-block span.button a, .darkblue-block span.button a {
+.wide-white-block span.button a, .wide-darkgray-block span.button a, .darkblue-block span.button a {
     display: inline-block;
     text-decoration: none;
     padding: 1%;
@@ -540,7 +571,7 @@ div.wide-darkblue-block label, div.darkblue-block label {
     background-color: rgb(0, 100, 200);
 }
 
-.wide-white-block span.button a:hover, .wide-darkgary-block span.button a:hover, .darkblue-block span.button a:hover {
+.wide-white-block span.button a:hover, .wide-darkgray-block span.button a:hover, .darkblue-block span.button a:hover {
     background: rgb(50, 50, 50);
     padding: 1%;
 }

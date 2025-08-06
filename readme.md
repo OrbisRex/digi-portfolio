@@ -5,3 +5,4 @@ Main purpose is to collect evidence of learning, allow evaluation and present th
 
 ## Versions
 * v0.1.0 (22/07/25): Initial development version
+* v0.1.1 (06/08/25): Added Criteria + Descriptors and fixes

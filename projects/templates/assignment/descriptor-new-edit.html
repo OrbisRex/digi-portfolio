@@ -1,0 +1,70 @@
+{# New Descriptor template #}
+{% extends 'base.html' %}
+
+{% block title %}DiGi Portfolio | Create or edit descriptor{% endblock %}
+
+{% block content %}
+    <section id="top" class="form">
+        <div class="wide-envelop">
+        {% if descriptor %}
+            <h1>{{ descriptor.name }}</h1>
+            <p>descriptor by {{descriptor.author}}</p>
+
+            <form action="{% url 'projects:descriptor-edit' descriptor.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">    
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        {% else %}
+            <h1>New Descriptor</h1>
+            <form action="{% url 'projects:descriptor-new' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="wide">
+                    <input type="submit" name="save" value="Save">
+                    <input type="submit" name="another" value="Save and add another">
+                </div>
+            </form>
+        {% endif %}
+        </div>
+    </section>
+
+    <section id="last" class="lightgray">
+        <h2>Last added</h2>
+        <div class="wide-envelop">
+        {%if last_descriptors %}
+            {% for descriptor in last_descriptors.all %}    
+                <div class="darkgray-block">
+                <h3 class="title">{{ descriptor.name }}</h3>
+                    <div class="data">
+                        <p class="text"># {{ descriptor.description }}</p>
+                        <p class="tools">
+                            <span title="Level">
+                            {% for code, type in descriptor_types %} 
+                                {% if code == descriptor.type %} {{ type }} {% endif %}
+                            {% endfor %}
+                            </span>
+                            / <span title="Author">{{ descriptor.author }}</span>
+                        </p>
+                    </div>
+                </div>    
+            {% endfor %}    
+        {% else %}
+            <p class='info'>No descriptors found.</p>
+        {% endif %}
+        </div>
+    </section>
+
+    {#TODO: Save as a copy#}
+    <section id="navigation">
+        <span class="button"><a href="{{ wizard }}#criteria" title="Storno and back.">&lt;</a></span>
+        <span class="button"><a href="#top" title="Add new item.">+</a></span>
+        <span class="button"><a href="#last" title="Last added items.">Last</a></span>
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button-logout">Log Out</button>
+        </form>    
+    </section>
+{% endblock %}

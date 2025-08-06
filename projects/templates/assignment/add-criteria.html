@@ -1,7 +1,7 @@
 {# New Assignment template #}
 {% extends 'base.html' %}
 
-{% block title %}DiGi Portfolio | New Assignment{% endblock %}
+{% block title %}DiGi Portfolio | Add Criteria to Assignment{% endblock %}
 
 {% block content %}
     <section id="top" class="form">
@@ -9,17 +9,12 @@
         {% if assignment %}
             <h1>{{ assignment.name }}</h1>
             <p>by {{assignment.teacher}}</p>
-
-            <form action="{% url 'projects:assignment-edit' assignment.id %}" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <div class="wide">    
-                    <input type="submit" value="Save">
-                </div>
-            </form>
-        {% else %}
-            <h1>New Assignment</h1>
-            <form action="{% url 'projects:assignment-new' %}" method="post">
+            {% if perms.projects.change_assignment %}
+            <div class="button-list">
+                <span class="button"><a href="{% url 'projects:criterion-new' %}" title="Add your new criterion.">+</a></span>
+            </div>
+            {% endif %}
+            <form action="{% url 'projects:criteria-add' assignment.id %}" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
@@ -29,9 +24,10 @@
         {% endif %}
         </div>
     </section>
+
     {#TODO: Save as a copy#}
     <section id="navigation">
-        <span class="button"><a href="{{ wizard }}" title="Storno and back.">&lt;</a></span>
+        <span class="button"><a href="{{ wizard }}#criteria" title="Storno and back.">&lt;</a></span>
         <form id="logout-form" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="button-logout">Log Out</button>

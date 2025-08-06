@@ -28,8 +28,52 @@
         {% endcomment %}
     </section>
 
+    <section id="criteria" class="lightgray">
+        <h2>What is expected?</h2>
+        <div class="wide-envelop">
+        {% if perms.projects.add_criterion %}
+        <div class="button-list">
+            <span class="button"><a href="{% url 'projects:criteria-add' assignment.id %}" title="Add your new criterion.">Add</a></span>
+        </div>
+        {% endif %}
+        {%if assignment.criteria %}
+            {% for criterion in assignment.criteria.all %}    
+                <div class="darkgray-block">
+                <h3 class="title">{% if perms.projects.change_criterion %} {{ criterion.name }} {% endif %}
+                <span class="button-corner">
+                    <a href="{% url 'projects:criterion-edit' criterion.id %}" title="Edit your criterion.">
+                    ?
+                    </a>
+                </span>
+                </h3>
+                    {% for descriptor in criterion.descriptors.all %}
+                    <div class="data">
+                        <p class="text">[#{{ forloop.counter }}] {{ descriptor.description }}</p>
+                        <p class="tools">
+                            <span title="Level">
+                            {% for code, type in descriptor_types %} 
+                                {% if code == descriptor.type %} {{ type }} {% endif %}
+                            {% endfor %}
+                            </span>
+                            {% if perms.projects.change_criterion %}
+                                / <span title="Relevance">{{ criterion.weight }}</span>
+                                / <a href="{% url 'projects:descriptor-edit' descriptor.id %}">edit</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endfor %}    
+                </div>    
+            {% endfor %}    
+        {% else %}
+            <p class='info'>No criteria found.</p>
+        {% endif %}
+        </div>
+    </section>
+
     <section id="navigation">
-        <span class="button"><a href="{% url 'projects:assignment-index' %}" title="Back to Projects">&lt;</a></span>
+        <span class="button"><a href="{% url 'projects:assignment-index' %}" title="Storno and back.">&lt;</a></span>
+        <span class="button"><a href="#top" title="Back to top!">^</a></span>
+        <span class="button"><a href="#criteria" title="What to do?">What?</a></span>
         <form id="logout-form" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="button-logout">Log Out</button>

@@ -101,7 +101,7 @@ class SubjectView(PermissionRequiredMixin, UpdateView):
                 subject.save()
                 form.save_m2m()
 
-        return HttpResponseRedirect('{}#subject'.format(reverse("settings:index")))
+        return HttpResponseRedirect(reverse("settings:index", fragment='#subject'))
         
 
 class TopicView(PermissionRequiredMixin, UpdateView):
@@ -142,7 +142,7 @@ class TopicView(PermissionRequiredMixin, UpdateView):
                 topic.save()
                 form.save_m2m()
             
-        return HttpResponseRedirect('{}#topic'.format(reverse("settings:index")))
+        return HttpResponseRedirect(reverse("settings:index", fragment='#topic'))
         
 
 class SetView(PermissionRequiredMixin, UpdateView):
@@ -183,4 +183,4 @@ class SetView(PermissionRequiredMixin, UpdateView):
                 set.save()
                 form.save_m2m()
 
-        return HttpResponseRedirect('{}#set'.format(reverse("settings:index")))
+        return HttpResponseRedirect(reverse("settings:index", fragment='#set'))

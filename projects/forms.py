@@ -3,12 +3,29 @@ from django.forms import ModelForm
 from settings.models import Subject
 from settings.models import Topic
 from settings.models import Member
+
+from .models import Descriptor
+from .models import Criterion
 from .models import Assignment
+
+
+class DescriptorForm(ModelForm):
+    
+    class Meta:
+        model = Descriptor
+        fields = ['name', 'description', 'type', 'author']
+
+
+class CriterionForm(ModelForm):
+    
+    class Meta:
+        model = Criterion
+        fields = ['name', 'note', 'group', 'weight', 'author', 'descriptors']
 
 
 class AssignmentForm(ModelForm):
     
-    # Get request from the view and select only topics belonging to current user.
+    # Get request from the view and select only assignments belonging to current user.
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
@@ -27,4 +44,11 @@ class AssignmentForm(ModelForm):
 
     class Meta:
         model = Assignment
-        fields = ['subject', 'topic', 'name', 'state', 'note']
+        fields = ['subject', 'topic', 'name', 'state', 'criteria', 'note']
+
+
+class AddCriteriaForm(ModelForm):
+    
+    class Meta:
+        model = Assignment
+        fields = ['criteria']
