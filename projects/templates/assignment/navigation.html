@@ -1,6 +1,6 @@
 <section id="navigation">
     <span class="button"><a href="{%  url 'core:dashboard' %}" title="Back to Dashboard.">&lt;</a></span>
-    {% if perms.projects.add_assignment %}
+    {% if perms.projects.add_submission %}
         <span class="button"><a href="{% url 'projects:assignment-new' %}" title="New Assignment">+</a></span> 
     {% endif %}
 

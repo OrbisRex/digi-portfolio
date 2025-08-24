@@ -1,16 +1,16 @@
-{# New Assignment template #}
+{# New Submission template #}
 {% extends 'base.html' %}
 
-{% block title %}DiGi Portfolio | Create or edit criterion{% endblock %}
+{% block title %}DiGi Portfolio | New/Edit Submission{% endblock %}
 
 {% block content %}
     <section id="top" class="form">
         <div class="wide-envelop">
-        {% if criterion %}
-            <h1>{{ criterion.name }}</h1>
-            <p>criterion by {{criterion.author}}</p>
-            {{ session_context.last_assignment_url}}
-            <form action="{% url 'projects:criterion-edit' criterion.id %}" method="post">
+        {% if submission %}
+            <h1>{{ submission.name }}</h1>
+            <p>submission by {{submission.author}}</p>
+
+            <form action="{% url 'projects:submission-edit' submission.id %}" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
@@ -18,23 +18,21 @@
                 </div>
             </form>
         {% else %}
-            <h1>New Criterion</h1>
-
-            <form action="{% url 'projects:criterion-new' %}" method="post">
+            <h1>New Submission</h1>
+            <form action="{% url 'projects:submission-new' %}" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
-                    <span class="button"><a href="{% url 'projects:descriptor-new' %}" title="Add your new criterion.">Add</a></span>
                     <input type="submit" value="Save">
                 </div>
             </form>
         {% endif %}
         </div>
     </section>
-
+    
     {#TODO: Save as a copy#}
     <section id="navigation">
-        <span class="button"><a href="{{ wizard }}#criteria" title="Settings">&lt;</a></span>
+        <span class="button"><a href="{{ wizard }}" title="Storno and back.">&lt;</a></span>
         <form id="logout-form" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="button-logout">Log Out</button>

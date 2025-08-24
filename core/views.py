@@ -30,7 +30,14 @@ class DashboardView(TemplateView):
     def get_current_user(self):
         return Member.objects.get(user_id=self.request.user.id)
 
+    def remove_wizard_steps(self, request):
+        ''' Restart wizard steps.'''
+        
+        if request.session.has_key('wizard'):
+            request.session.pop('wizard')
+
     def get(self, request):
+        self.remove_wizard_steps(request=request)
         
         try:
             loged_as = self.get_current_user()

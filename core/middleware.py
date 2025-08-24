@@ -26,7 +26,7 @@ class LastVisitedMiddleware:
 
             loop_count = request.session.get('http_referer_count', 0)
             last_page = request.META.get('HTTP_REFERER', request_path)
-            last_session_page = request.session.get('http_referer_' + str(loop_count))
+            last_session_page = request.session.get('http_referer_' + str(loop_count), '')
 
             # Remove records if more than 15
             if int(loop_count) > 15:
@@ -43,6 +43,9 @@ class LastVisitedMiddleware:
                 request.session['http_referer_' + str(loop_count)] = request.META.get('HTTP_REFERER', request_path)
         except KeyError:
             # Silence the exception - this is the users first request
+            loop_count = 0
+            last_page = ''
+            last_session_page = ''
             pass
         # TODO: Remove
         print('Check: '+str(loop_count))

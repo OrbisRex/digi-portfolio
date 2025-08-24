@@ -2,29 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
+from core.models import File
 from settings.models import Subject
 from settings.models import Topic
 from settings.models import Member
 
 
 class Descriptor(models.Model):
-    '''Descriptors for criteria.'''
+    """Descriptors for criteria."""
     
     class Types(models.TextChoices):
         GENERAL = 'TYPE_GENERAL', _('General')
         SPECIAL = 'TYPE_SPECIAL', _('Specialised')
 
-    ##Fileds    
+    ## Fileds    
     name = models.CharField(max_length=255, null=False)
     description = models.CharField(max_length=255, null=True)
     type = models.JSONField(choices=Types.choices, null=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     update_time = models.DateTimeField(auto_now=True)
     
-    ##Metadata
+    ## Metadata
     
-    ##Methods   
-    def fetch_last_descriptors(user, limit):
+    ## Methods   
+    def filter_last(user, limit):
         return Descriptor.objects.filter(author__id=user.id).order_by('-update_time')[:limit]
 
     def __str__(self):
@@ -32,7 +33,7 @@ class Descriptor(models.Model):
 
 
 class Criterion(models.Model):
-    '''Avaluation criteria.'''
+    """Avaluation criteria."""
     
     class Groups(models.TextChoices):
         GENERAL = 'GROUP_GENERAL', _('General')
@@ -43,7 +44,7 @@ class Criterion(models.Model):
         MIDDLE = 2, _('Middle')
         HIGH = 3, _('High')
 
-    ##Fileds    
+    ## Fileds    
     name = models.CharField(max_length=255, null=False)
     note = models.CharField(max_length=255, null=True)
     group = models.JSONField(choices=Groups.choices, null=False)
@@ -52,49 +53,103 @@ class Criterion(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     update_time = models.DateTimeField(auto_now=True)
     
-    ##Metadata
+    ## Metadata
     
-    ##Methods    
+    ## Methods    
+    def filter_by_author(user, limit=None):
+        try:
+            return Criterion.objects.filter(author__id=user.id).order_by('-update_time')[:limit]
+        except:
+            return None
+
     def __str__(self):
         return self.name
 
 
 class Assignment(models.Model):
-    '''Assignments for students.'''
+    """Assignments for students."""
     
     class States(models.TextChoices):
         PUBLIC = 'STATE_PUBLIC', _('Public')
         DRAFT = 'STATE_DRAFT', _('Draft')
         ARCHIVED = 'STATE_ARCHIVED', _('Archived')
 
-    ##Fileds    
-    #NOTE: Change teacher to author!
+    ## Fileds    
     name = models.CharField(max_length=255, null=False)
     state = models.JSONField(choices=States.choices)
     criteria = models.ManyToManyField(Criterion)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     note = models.CharField(max_length=255, null=True)
     update_time = models.DateTimeField(auto_now=True)
     
-    ##Metadata
+    ## Metadata
     
-    ##Methods    
-    def get_assignments_by_teacher(user, limit):
-        return Assignment.objects.filter(teacher__id=user.id).order_by('-update_time')[:limit]
-
-    def get_assignments_by_subject(user, id):
+    ## Methods    
+    def filter_by_author(user, limit=None):
         try:
-            return Assignment.objects.filter(subject=id, teacher=user.id).order_by('-update_time')
+            return Assignment.objects.filter(author__id=user.id).order_by('-update_time')[:limit]
         except:
             return None
 
-    def get_assignments_by_topic(user, id):
+    def filter_by_subject(user, id):
         try:
-            return Assignment.objects.filter(topic=id, teacher=user.id).order_by('-update_time')
+            return Assignment.objects.filter(subject=id, author=user.id).order_by('-update_time')
+        except:
+            return None
+
+    def filter_by_topic(user, id):
+        try:
+            return Assignment.objects.filter(topic=id, author=user.id).order_by('-update_time')
         except:
             return None
 
     def __str__(self):
         return self.name
+
+
+class Submission(models.Model):
+    """Submission from students."""
+    
+    class States(models.TextChoices):
+        DRAFT = 'STATE_DRAFT', _('Draft: working on it')
+        REVIEW = 'STATE_REVIEW', _('Review: changes needed')
+        FINISHED = 'STATE_FINISHED', _('Finished: done')
+        ARCHIVED = 'STATE_ARCHIVED', _('Archived: stored for me')
+
+    ## Fileds    
+    name = models.CharField(max_length=255, null=False)
+    note = models.CharField(max_length=255, null=True)
+    text = models.TextField(max_length=4000, null=True)
+    file = models.ManyToManyField(File, null=True)
+    state = models.JSONField(choices=States.choices)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_created=True)
+    update_time = models.DateTimeField(auto_now=True)
+    
+    ## Metadata
+    
+    ## Methods    
+    def filter_by_author(self, user, limit):
+        try:
+            return self.objects.filter(author__id=user.id).order_by('-update_time')[:limit]
+        except self.DoesNotExist:
+            return None
+
+    def filter_by_subject(self, user, subject, limit):
+        try:
+            return self.objects.filter(author__id=user.id, assignment__subject=subject).order_by('-update_time')[:limit]
+        except self.DoesNotExist:
+            return None
+
+    def filter_by_state(self, user, state):
+        try:
+            return self.objects.filter(state=state, author__id=user.id).order_by('-update_time')
+        except self.DoesNotExist:
+            return None
+
+    def __str__(self):
+        return f"{self.name}({self.author})"
+

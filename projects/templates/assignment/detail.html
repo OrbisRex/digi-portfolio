@@ -33,7 +33,11 @@
         <div class="wide-envelop">
         {% if perms.projects.add_criterion %}
         <div class="button-list">
-            <span class="button"><a href="{% url 'projects:criteria-add' assignment.id %}" title="Add your new criterion.">Add</a></span>
+            <span class="button">
+                <a href="{% url 'projects:criteria-add' assignment.id %}" title="Add or remove criteria.">
+                    Edit
+                </a>
+            </span>
         </div>
         {% endif %}
         {%if assignment.criteria %}
@@ -57,7 +61,9 @@
                             </span>
                             {% if perms.projects.change_criterion %}
                                 / <span title="Relevance">{{ criterion.weight }}</span>
-                                / <a href="{% url 'projects:descriptor-edit' descriptor.id %}">edit</a>
+                                / <a href="{% url 'projects:descriptor-edit' descriptor.id %}" title="Edit descriptor.">
+                                    edit
+                                </a>
                             {% endif %}
                         </p>
                     </div>

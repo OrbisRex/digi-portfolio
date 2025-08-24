@@ -8,7 +8,7 @@
         <div class="wide-envelop">
         {% if assignment %}
             <h1>{{ assignment.name }}</h1>
-            <p>by {{assignment.teacher}}</p>
+            <p>by {{assignment.author}}</p>
             {% if perms.projects.change_assignment %}
             <div class="button-list">
                 <span class="button"><a href="{% url 'projects:criterion-new' %}" title="Add your new criterion.">+</a></span>

@@ -1,35 +1,21 @@
 {# New Assignment template #}
 {% extends 'base.html' %}
 
-{% block title %}DiGi Portfolio | New/Edit Assignment{% endblock %}
+{% block title %}DiGi Portfolio | New Submission Files{% endblock %}
 
 {% block content %}
     <section id="top" class="form">
         <div class="wide-envelop">
-        {% if assignment %}
-            <h1>{{ assignment.name }}</h1>
-            <p>assignment by {{assignment.author}}</p>
-
-            <form action="{% url 'projects:assignment-edit' assignment.id %}" method="post">
+            <h1>New Submission Files</h1>
+            <form action="{% url 'projects:submission-file' %}" method="post" enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ form }}
                 <div class="wide">    
                     <input type="submit" value="Save">
                 </div>
             </form>
-        {% else %}
-            <h1>New Assignment</h1>
-            <form action="{% url 'projects:assignment-new' %}" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <div class="wide">    
-                    <input type="submit" value="Save">
-                </div>
-            </form>
-        {% endif %}
         </div>
     </section>
-    {#TODO: Save as a copy#}
     <section id="navigation">
         <span class="button"><a href="{{ wizard }}" title="Storno and back.">&lt;</a></span>
         <form id="logout-form" method="post" action="{% url 'logout' %}">
